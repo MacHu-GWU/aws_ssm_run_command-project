@@ -31,6 +31,9 @@ def run_python_script(
     code: str,
     s3uri: str,
     args: T.Optional[T.List[str]] = None,
+    delays: int = 3,
+    timeout: int = 60,
+    verbose: bool = True,
 ) -> CommandInvocation:
     """
     这是我们解决方案的主函数
@@ -66,15 +69,15 @@ def run_python_script(
     ]
     args_.extend(args)
     command2 = " ".join(args_)
-
+    commands = [
+        command1,
+        command2
+    ]
     # run remote command via SSM
     command_id = send_command(
         ssm_client=ssm_client,
         instance_id=instance_id,
-        commands=[
-            command1,
-            command2,
-        ],
+        commands=commands,
     )
     time.sleep(1)  # wait 1 second for the command to be submitted
     try:
@@ -82,6 +85,9 @@ def run_python_script(
             ssm_client=ssm_client,
             command_id=command_id,
             instance_id=instance_id,
+            delays=delays,
+            timeout=timeout,
+            verbose=verbose,
         )
     except CommandInvocationFailedError as e:
         command_invocation = CommandInvocation.get(
