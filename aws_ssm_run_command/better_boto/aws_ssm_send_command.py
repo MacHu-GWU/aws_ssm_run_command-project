@@ -11,6 +11,10 @@ if T.TYPE_CHECKING:
     from mypy_boto3_ssm.client import SSMClient
 
 
+class CommandInvocationFailedError(Exception):
+    pass
+
+
 def send_command(
     ssm_client: "SSMClient",
     instance_id: str,
@@ -145,6 +149,8 @@ def wait_until_command_succeeded(
             CommandInvocationStatusEnum.Failed.value,
             CommandInvocationStatusEnum.Cancelling.value,
         ]:
-            raise Exception(f"Command failed, status: {command_invocation.Status}")
+            raise CommandInvocationFailedError(
+                f"Command failed, status: {command_invocation.Status}"
+            )
         else:
             pass
