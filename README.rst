@@ -54,8 +54,8 @@ Utility tool to use AWS SSM run command feature more efficiently.
 
 Example:
 
-- `run_command_on_one_ec2-run_python_script <./debug/run_command_on_one_ec2-run_python_script>`_
-- `run_command_on_one_ec2-run_python_script_large_payload <./debug/run_command_on_one_ec2-run_python_script_large_payload>`_
+- `run_command_on_one_ec2-run_python_script <./examples/run_command_on_one_ec2-run_python_script>`_
+- `run_command_on_one_ec2-run_python_script_large_payload <./examples/run_command_on_one_ec2-run_python_script_large_payload>`_
 
 
 .. _install:
