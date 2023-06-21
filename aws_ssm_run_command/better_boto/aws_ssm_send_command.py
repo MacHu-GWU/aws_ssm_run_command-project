@@ -122,6 +122,7 @@ def wait_until_command_succeeded(
     ssm_client: "SSMClient",
     command_id: str,
     instance_id: str,
+    raises: bool = True,
     delays: int = 3,
     timeout: int = 60,
     verbose: bool = True,
@@ -133,6 +134,17 @@ def wait_until_command_succeeded(
     Reference:
 
     - get_command_invocation_
+
+    :param ssm_client:
+    :param command_id: the SSM run command "command_id", it is from the
+        ssm_client.send_command(...) response
+    :param instance_id: ec2 instance id
+    :param raises: if True, then raises error if command failed,
+        otherwise, just return the :class:`CommandInvocation` represents the failed
+        invocation.
+    :param delays:
+    :param timeout:
+    :param verbose:
     """
     for _ in Waiter(delays=delays, timeout=timeout, verbose=verbose):
         command_invocation = CommandInvocation.get(
@@ -149,8 +161,11 @@ def wait_until_command_succeeded(
             CommandInvocationStatusEnum.Failed.value,
             CommandInvocationStatusEnum.Cancelling.value,
         ]:
-            raise CommandInvocationFailedError(
-                f"Command failed, status: {command_invocation.Status}"
-            )
+            if raises:
+                raise CommandInvocationFailedError(
+                    f"Command failed, status: {command_invocation.Status}"
+                )
+            else:
+                return command_invocation
         else:
             pass
