@@ -10,11 +10,11 @@ import time
 import uuid
 
 from ..better_boto.api import (
-    CommandInvocationFailedError,
-    send_command,
+    send_command_sync,
     CommandInvocation,
     wait_until_command_succeeded,
 )
+from ..exc import RunCommandError
 
 if T.TYPE_CHECKING:
     from mypy_boto3_ssm.client import SSMClient
@@ -35,6 +35,8 @@ def run_python_script(
     code: str,
     s3uri: str,
     args: T.Optional[T.List[str]] = None,
+    gap: int = 1,
+    raises: bool = True,
     delays: int = 3,
     timeout: int = 60,
     verbose: bool = True,
@@ -57,6 +59,12 @@ def run_python_script(
     :param args: the arguments you want to pass to your Python script, if
         the final command is 'python /tmp/xxx.py arg1 arg2', then args should
         be ["arg1", "arg2"]
+    :param gap: the gap between each ``send_command`` api and the first
+        ``get_command_invocation`` api call. Because it takes some time to have
+        the command invocation fired to SSM agent.
+    :param raises: if True, then raises error if command failed,
+        otherwise, just return the :class:`CommandInvocation` represents the failed
+        invocation.
     :param delays: time interval in seconds to check the status of the command
     :param timeout: the maximum time in seconds to wait for the command to finish
     :param verbose: whether to print out the status of the command
@@ -85,29 +93,16 @@ def run_python_script(
         command1,
         command2,
     ]
-    # run remote command via SSM
-    command_id = send_command(
+    return send_command_sync(
         ssm_client=ssm_client,
         instance_id=instance_id,
         commands=commands,
+        gap=gap,
+        raises=raises,
+        delays=delays,
+        timeout=timeout,
+        verbose=verbose,
     )
-    time.sleep(1)  # wait 1 second for the command to be submitted
-    try:
-        command_invocation = wait_until_command_succeeded(
-            ssm_client=ssm_client,
-            command_id=command_id,
-            instance_id=instance_id,
-            delays=delays,
-            timeout=timeout,
-            verbose=verbose,
-        )
-    except CommandInvocationFailedError as e:
-        command_invocation = CommandInvocation.get(
-            ssm_client=ssm_client,
-            command_id=command_id,
-            instance_id=instance_id,
-        )
-    return command_invocation
 
 
 def run_python_script_large_payload(
@@ -121,6 +116,8 @@ def run_python_script_large_payload(
     s3uri_script: str,
     s3uri_in: str,
     s3uri_out: str,
+    gap: int = 1,
+    raises: bool = True,
     delays: int = 3,
     timeout: int = 60,
     verbose: bool = True,
@@ -184,6 +181,12 @@ def run_python_script_large_payload(
     :param s3uri_script: the S3 location you want to upload this Python script to.
     :param s3uri_in: the S3 location you want to download the input data from.
     :param s3uri_out: the S3 location you want to upload the output data to.
+    :param gap: the gap between each ``send_command`` api and the first
+        ``get_command_invocation`` api call. Because it takes some time to have
+        the command invocation fired to SSM agent.
+    :param raises: if True, then raises error if command failed,
+        otherwise, just return the :class:`CommandInvocation` represents the failed
+        invocation.
     :param delays: time interval in seconds to check the status of the command
     :param timeout: the maximum time in seconds to wait for the command to finish
     :param verbose: whether to print out the status of the command
@@ -216,26 +219,13 @@ def run_python_script_large_payload(
         command1,
         command2,
     ]
-    # run remote command via SSM
-    command_id = send_command(
+    return send_command_sync(
         ssm_client=ssm_client,
         instance_id=instance_id,
         commands=commands,
+        gap=gap,
+        raises=raises,
+        delays=delays,
+        timeout=timeout,
+        verbose=verbose,
     )
-    time.sleep(1)  # wait 1 second for the command to be submitted
-    try:
-        command_invocation = wait_until_command_succeeded(
-            ssm_client=ssm_client,
-            command_id=command_id,
-            instance_id=instance_id,
-            delays=delays,
-            timeout=timeout,
-            verbose=verbose,
-        )
-    except CommandInvocationFailedError as e:
-        command_invocation = CommandInvocation.get(
-            ssm_client=ssm_client,
-            command_id=command_id,
-            instance_id=instance_id,
-        )
-    return command_invocation

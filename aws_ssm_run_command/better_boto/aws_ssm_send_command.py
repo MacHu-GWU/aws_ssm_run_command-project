@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: doc string
+"""
+
 import typing as T
 import sys
 import enum
+import time
 import dataclasses
 
 from ..vendor.waiter import Waiter
+from ..exc import RunCommandError
 
 if T.TYPE_CHECKING:
     from mypy_boto3_ssm.client import SSMClient
-
-
-class CommandInvocationFailedError(Exception):
-    pass
 
 
 def send_command(
@@ -142,9 +144,11 @@ def wait_until_command_succeeded(
     :param raises: if True, then raises error if command failed,
         otherwise, just return the :class:`CommandInvocation` represents the failed
         invocation.
-    :param delays:
-    :param timeout:
-    :param verbose:
+    :param delays: check the command invocation status every ``delays`` seconds
+    :param timeout: how long we consider this command is timed out
+    :param verbose: whether to print the progress
+
+    :raises: :class:`RunCommandError` if ``raises`` is True and command failed.
     """
     for _ in Waiter(delays=delays, timeout=timeout, verbose=verbose):
         command_invocation = CommandInvocation.get(
@@ -162,10 +166,48 @@ def wait_until_command_succeeded(
             CommandInvocationStatusEnum.Cancelling.value,
         ]:
             if raises:
-                raise CommandInvocationFailedError(
-                    f"Command failed, status: {command_invocation.Status}"
-                )
-            else:
+                raise RunCommandError.from_command_invocation(command_invocation)
+            else:  # let the user to process the failed command_invocation them self
                 return command_invocation
         else:
             pass
+
+
+send_command_async = send_command
+
+
+def send_command_sync(
+    ssm_client: "SSMClient",
+    instance_id: str,
+    commands: T.List[str],
+    gap: int = 1,
+    raises: bool = True,
+    delays: int = 3,
+    timeout: int = 60,
+    verbose: bool = True,
+) -> CommandInvocation:
+    """
+    Send command and wait until it succeeds.
+
+    See :func:`send_command` and :func:`wait_until_command_succeeded` for input
+    arguments detail.
+
+    :param gap: the gap between each ``send_command`` api and the first
+        ``get_command_invocation`` api call. Because it takes some time to have
+        the command invocation fired to SSM agent.
+    """
+    command_id = send_command(
+        ssm_client=ssm_client,
+        instance_id=instance_id,
+        commands=commands,
+    )
+    time.sleep(gap)
+    return wait_until_command_succeeded(
+        ssm_client=ssm_client,
+        command_id=command_id,
+        instance_id=instance_id,
+        raises=raises,
+        delays=delays,
+        timeout=timeout,
+        verbose=verbose,
+    )
