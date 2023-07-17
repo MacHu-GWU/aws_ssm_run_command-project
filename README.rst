@@ -54,6 +54,7 @@ Utility tool to use AWS SSM run command feature more efficiently.
 
 Example:
 
+- `run_command synchronously <./examples/run_command/example.py>`_
 - `run_command_on_one_ec2-run_python_script <./examples/run_command_on_one_ec2-run_python_script>`_
 - `run_command_on_one_ec2-run_python_script_large_payload <./examples/run_command_on_one_ec2-run_python_script_large_payload>`_
 

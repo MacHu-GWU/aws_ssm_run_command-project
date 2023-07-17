@@ -22,6 +22,19 @@ if T.TYPE_CHECKING:
 
 
 def parse_last_line_json_in_output(output: str) -> T.Union[dict, list, T.Any]:
+    """
+    Parse the last line of the Command invocation output as JSON.
+
+    Example::
+
+        >>> output = (
+        ...     '{"id": 1}\\n'
+        ...     '{"id": 2}\\n'
+        ...     '{"id": 3}\\n'
+        ... )
+        >>> parse_last_line_json_in_output(output)
+        {'id': 3}
+    """
     lines = output.splitlines()
     return json.loads(lines[-1])
 

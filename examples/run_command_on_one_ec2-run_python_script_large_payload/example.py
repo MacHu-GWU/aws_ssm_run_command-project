@@ -4,10 +4,10 @@ import json
 from pathlib import Path
 from s3pathlib import S3Path, context
 from boto_session_manager import BotoSesManager
-from aws_ssm_run_command.patterns.run_command_on_one_ec2 import (
-    run_python_script_large_payload,
-)
 from rich import print as rprint
+
+import aws_ssm_run_command.api as aws_ssm_run_command
+
 
 bsm = BotoSesManager(profile_name="bmt_app_dev_us_east_1")
 context.attach_boto_session(bsm.boto_ses)
@@ -22,7 +22,7 @@ s3uri_script = f"s3://{bsm.aws_account_id}-{bsm.aws_region}-data/projects/aws_ss
 s3uri_in = f"s3://{bsm.aws_account_id}-{bsm.aws_region}-data/projects/aws_ssm_run_command/patterns/run_command_on_one_ec2/input.json"
 s3uri_out = f"s3://{bsm.aws_account_id}-{bsm.aws_region}-data/projects/aws_ssm_run_command/patterns/run_command_on_one_ec2/output.json"
 
-command_invocation = run_python_script_large_payload(
+command_invocation = aws_ssm_run_command.patterns.run_command_on_one_ec2.run_python_script_large_payload(
     ssm_client=bsm.ssm_client,
     s3_client=bsm.s3_client,
     instance_id=instance_id,
