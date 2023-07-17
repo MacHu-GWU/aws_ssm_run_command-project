@@ -10,7 +10,7 @@ from rich import print as rprint
 
 bsm = BotoSesManager(profile_name="bmt_app_dev_us_east_1")
 
-instance_id = "i-00f591fc972902fc5"
+instance_id = "i-043cd58afbc720a48"
 path_aws = "/home/ubuntu/.pyenv/shims/aws"
 path_python = "/home/ubuntu/.pyenv/shims/python"
 code = Path(__file__).absolute().parent.joinpath("script.py").read_text()
