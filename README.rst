@@ -1,12 +1,12 @@
 
-.. .. image:: https://readthedocs.org/projects/aws-ssm-run-command/badge/?version=latest
+.. image:: https://readthedocs.org/projects/aws-ssm-run-command/badge/?version=latest
     :target: https://aws-ssm-run-command.readthedocs.io/en/latest/
     :alt: Documentation Status
 
 .. image:: https://github.com/MacHu-GWU/aws_ssm_run_command-project/workflows/CI/badge.svg
     :target: https://github.com/MacHu-GWU/aws_ssm_run_command-project/actions?query=workflow:CI
 
-.. .. image:: https://codecov.io/gh/MacHu-GWU/aws_ssm_run_command-project/branch/main/graph/badge.svg
+.. image:: https://codecov.io/gh/MacHu-GWU/aws_ssm_run_command-project/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/MacHu-GWU/aws_ssm_run_command-project
 
 .. image:: https://img.shields.io/pypi/v/aws-ssm-run-command.svg
@@ -26,10 +26,10 @@
 
 ------
 
-.. .. image:: https://img.shields.io/badge/Link-Document-blue.svg
+.. image:: https://img.shields.io/badge/Link-Document-blue.svg
     :target: https://aws-ssm-run-command.readthedocs.io/en/latest/
 
-.. .. image:: https://img.shields.io/badge/Link-API-blue.svg
+.. image:: https://img.shields.io/badge/Link-API-blue.svg
     :target: https://aws-ssm-run-command.readthedocs.io/en/latest/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Install-blue.svg
