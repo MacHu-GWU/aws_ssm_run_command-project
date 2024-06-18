@@ -50,13 +50,9 @@
 
 Welcome to ``aws_ssm_run_command`` Documentation
 ==============================================================================
-Utility tool to use AWS SSM run command feature more efficiently.
+`AWS System Manager Run Command <https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html>`_ 是一个 AWS SSM 的功能, 它能让你用优雅的的 Rest API 来在 EC2 上执行远程命令. 这是在 EC2 上执行远程命令的最佳实践, 最便捷, 最安全, 最可靠.
 
-Example:
-
-- `run_command synchronously <./examples/run_command/example.py>`_
-- `run_command_on_one_ec2-run_python_script <./examples/run_command_on_one_ec2-run_python_script>`_
-- `run_command_on_one_ec2-run_python_script_large_payload <./examples/run_command_on_one_ec2-run_python_script_large_payload>`_
+``aws_ssm_run_command`` 是一个让你用非常 Pythonic 的方式来使用 AWS SSM Run Command 的工具.
 
 
 .. _install:

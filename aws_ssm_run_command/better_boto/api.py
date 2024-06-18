@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from .aws_ssm_send_command import send_command
-from .aws_ssm_send_command import send_command_async
-from .aws_ssm_send_command import send_command_sync
-from .aws_ssm_send_command import CommandInvocationStatusEnum
-from .aws_ssm_send_command import CommandInvocation
-from .aws_ssm_send_command import wait_until_command_succeeded
+from .response import Command
+from .response import CommandInvocation
+from .response import CommandInvocationStatusEnum
+from .run_shell_script import run_shell_script_async
+from .run_shell_script import run_shell_script_sync
+from .waiters import wait_until_send_command_succeeded

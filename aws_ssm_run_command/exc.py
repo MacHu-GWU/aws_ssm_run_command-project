@@ -2,8 +2,8 @@
 
 import typing as T
 
-if T.TYPE_CHECKING:
-    from .better_boto.aws_ssm_send_command import CommandInvocation
+if T.TYPE_CHECKING:  # pragma: no cover
+    from .better_boto.response import CommandInvocation
 
 
 class RunCommandError(SystemError):

@@ -54,8 +54,11 @@ jobs:
         run: "python -m pytest tests --cov=aws_ssm_run_command"
       # don't forget to goto codecov.io, enable your repo, copy the token
       # create an CODECOV_TOKEN env var in GitHub actions secret
-#      - name: "Upload coverage to Codecov"
-#        if: "contains(env.USING_COVERAGE, matrix.python-version)"
-#        uses: "codecov/codecov-action@v3" # https://github.com/marketplace/actions/codecov-action
-#        with:
-#          fail_ci_if_error: true
+      - name: "Upload coverage to Codecov"
+        if: "contains(env.USING_COVERAGE, matrix.python-version)"
+        uses: "codecov/codecov-action@v3" # https://github.com/marketplace/actions/codecov-action
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: MacHu-GWU/acore_conf-project
+          fail_ci_if_error: true
+
