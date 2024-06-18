@@ -8,3 +8,6 @@ include *.txt
 include *.rst
 exclude *.pyc
 exclude *.pyo
+exclude aws_ssm_run_command/tests/**
+exclude aws_ssm_run_command/vendor/pytest_cov_helper.py
+exclude aws_ssm_run_command/paths.py
