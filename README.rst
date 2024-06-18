@@ -50,6 +50,9 @@
 
 Welcome to ``aws_ssm_run_command`` Documentation
 ==============================================================================
+.. image:: https://aws-ssm-run-command.readthedocs.io/en/latest/_static/aws_ssm_run_command-logo.png
+    :target: https://aws-ssm-run-command.readthedocs.io/en/latest/index.html
+
 `AWS System Manager Run Command <https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html>`_ 是一个 AWS SSM 的功能, 它能让你用优雅的的 Rest API 来在 EC2 上执行远程命令. 这是在 EC2 上执行远程命令的最佳实践, 最便捷, 最安全, 最可靠.
 
 ``aws_ssm_run_command`` 是一个让你用非常 Pythonic 的方式来使用 AWS SSM Run Command 的工具.

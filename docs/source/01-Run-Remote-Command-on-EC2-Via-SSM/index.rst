@@ -75,9 +75,12 @@ Manually Install SSM Agent on EC2
 ------------------------------------------------------------------------------
 下面这段代码展示了如何用 boto3 SDK 通过 SSM 运行远程命令.
 
-.. literalinclude:: ./example.py
-   :language: python
-   :linenos:
+.. dropdown:: example.py
+
+    .. literalinclude:: ./example.py
+       :language: python
+       :emphasize-lines: 1-1
+       :linenos:
 
 Reference:
 
